@@ -1,27 +1,46 @@
-# Camp dApp
+# Advanced Sample Hardhat Project
 
-This repo contains a step by step walkthrough towards a production-ready dApp.
+This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
 
-## Repo structure
+The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
 
-If you take a look of the existing branches, you'll see that there's multiple numbered branches. They build on top of each other, starting from `0-overview` (the one you're in, right now).
-Each branch has its own readme, like this one, with an overview of the progress towards the production-ready dApp.
+Try running some of the following tasks:
 
-## dApp overview
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+npx hardhat help
+REPORT_GAS=true npx hardhat test
+npx hardhat coverage
+npx hardhat run scripts/deploy.ts
+TS_NODE_FILES=true npx ts-node scripts/deploy.ts
+npx eslint '**/*.{js,ts}'
+npx eslint '**/*.{js,ts}' --fix
+npx prettier '**/*.{json,sol,md}' --check
+npx prettier '**/*.{json,sol,md}' --write
+npx solhint 'contracts/**/*.sol'
+npx solhint 'contracts/**/*.sol' --fix
+```
 
-The goal at DappCamp is that you learn the keys of building a dApp, so this walkthrough includes:
+# Etherscan verification
 
-* Building an [ERC721](https://eips.ethereum.org/EIPS/eip-721) (non-fungible) token.
-* Building an [ERC20](https://eips.ethereum.org/EIPS/eip-20) (fungible) token.
-* Creating a staking contract (DeFi).
-* Testing.
-* Deploying contracts.
-* Gas optimization.
-* Security.
-* Interacting with your contracts from the browser.
+To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
 
-## Questions and help
+In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
 
-You probably got into this repo because you're starting [DappCamp](https://www.dappcamp.xyz/). In that case, congrats, you'll have a lot of fun in the next weeks. You can reach your technical coaches for help.
+```shell
+hardhat run --network ropsten scripts/deploy.ts
+```
 
-In case you aren't doing DappCamp and you need help, you can open an issue or contact me on [Twitter](https://twitter.com/lucasjanon).
+Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+
+```shell
+npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+```
+
+# Performance optimizations
+
+For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
