@@ -100,4 +100,4 @@ I recommend you adding the following to your VS Code [settings.json](https://cod
 },
 ```
 
-That will autoformat your code on save, and fix some of the linting problems.
+That will autoformat your code on save, and automatically fix some of the linting problems.
