@@ -5,7 +5,7 @@ This repo contains a step by step walkthrough towards a production-ready dApp.
 ## Repo structure
 
 If you take a look of the existing branches, you'll see that there's multiple numbered branches. They build on top of each other, starting from `0-overview` (the one you're in, right now).
-Each branch has its own readme, like this one, with an overview of the progress towards the production-ready dApp.
+Each branch has its own readme, like this one, with an overview of the progress towards the dApp.
 
 ## dApp overview
 
