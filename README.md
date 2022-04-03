@@ -43,9 +43,18 @@ Let's put it simply, everyone that worked with Typescript loves it. It provides 
 
 The goal of this walkthrough is not you becoming a Typescript expert, so feel free to use [any](https://www.typescriptlang.org/docs/handbook/basic-types.html#any), and [@ts-ignore](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments) when you struggle to make your typings work. My only warning is that you don't abuse them on production projects, Solidity code manipulates value and should be treated like mission-critical software, type safety in your tests and deploy scripts adds an extra layer of correctness that you should take advantage from.
 
+### What wasn't added by Hardhat?
+
+I added the following files and useful configs on top of Hardhat's scaffolding:
+
+* `.vscode` folder, including recommended extensions.
+* `package.json` scripts (compile, test, test:watch).
+* `chainId: 1337` in [hardhat.config.ts](hardhat.config.ts), to fix [an issue with Metamask](https://hardhat.org/metamask-issue.html).
+
 ### Files and folders
 
 * `tsconfig.json` Typescript config.
+* `.env.example` you'll need a `.env` file with your own variables to deploy and verify your contracts.
 * `package.json`, `package-lock.json` tooling NPM dependencies.
 * `.eslintrc.js`, `.eslintignore` [ESLint](https://eslint.org/) is a linter for Typescript/Javascript, you can find how to make the most of it below, in [Recommended tooling](#recommended-tooling).
 * `.prettierrc`, `.prettierignore` a TS/JS code formatter that also works for Solidity.
@@ -57,6 +66,10 @@ The goal of this walkthrough is not you becoming a Typescript expert, so feel fr
 * `.npmignore` useful if you publish your contracts to NPM, like [OpenZeppelin](https://www.npmjs.com/package/@openzeppelin/contracts) does.
 
 ### Recommended tooling
+
+#### entr
+
+[entr](https://github.com/eradman/entr) is a utility for running arbitrary commands when files change, it's useful since Hardhat [doesn't yet allow running watch commands](https://github.com/NomicFoundation/hardhat/issues/891).
 
 #### VS Code ESLint extension
 
