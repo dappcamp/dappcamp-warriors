@@ -10,8 +10,8 @@
 pragma solidity ^0.8.4;
 
 /**
- * @dev Here we import multiple OpenZeppelin contracts,
- * as I mentioned in the README, it's highly recommended not to reinvent the wheel.
+ * @dev Here, we import multiple OpenZeppelin contracts. As I mention in the OpenZeppelin section of the README,
+ * it's highly recommended to use their contracts always that you can, and not to reinvent the wheel.
  * On VS Code, press CMD/ctrl + click on the import string to open the contract source code.
  */
 
