@@ -1,4 +1,4 @@
-# Camp dApp
+# DappCamp Warriors
 
 ## Scaffolding
 
