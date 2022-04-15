@@ -35,7 +35,7 @@ Some of its benefits are:
 
 ### Hardhat's readme
 
-In the `readmes` folder, you can find [a readme](readmes/hardhat.md) that comes with every Hardhat project. I moved it there to prioritize this one, but it's a useful read to have a better understanding of what Hardhat can do.
+In the `docs` folder, you can find [a readme](docs/hardhat.md) that comes with every Hardhat project. I moved it there to prioritize this one, but it's a useful read to have a better understanding of what Hardhat can do.
 
 ### Why Typescript
 
