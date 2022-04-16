@@ -1,28 +1,16 @@
 # DappCamp Warriors
 
-## Create ERC20
+## Testing
 
 ### Overview
 
-We already scaffolded the project, created the contracts of our NFT collection, and imported third-party contracts.
+#### Why testing?
 
-Now, it's time to create our fungible token: **$CAMP**.
+Writing tests **should** be part of your Solidity development pipeline.
+Remember, we're not deploying rockets like Elon Musk, but our software is still mission critical, it potentially will handle millions of highly liquid, irrecoverable dollars, and we should take as many security measures as we can.
 
-We will use an OpenZeppelin contract that implements the [ERC20](https://ethereum.org/es/developers/docs/standards/tokens/erc-20/) standard, which makes things pretty easy.
+To be honest, I didn't write ~~m~~any tests in most of my Web2 projects. It's not a big deal if the button that allows people changing their bios is broken on a social media startup with 100 monthly active users. Someone will report it and, since it's a startup, (hopefully) the team will be responsive on fixing it. But me, the same person that didn't write tests for bio buttons, is doing mostly TDD for writing Solidity code. And that's because each piece of software has their own tradeoffs and should be treated differently.
 
-The contract could be as simple as this:
+Testing is not a [silver bullet](https://en.wikipedia.org/wiki/No_Silver_Bullet), but it's an extra layer of confidence on the correctness of our code.
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
-
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
-contract Camp is ERC20 {
-    constructor() ERC20("Camp", "CAMP") {}
-}
-```
-
-But we will add some extra magic to have more control over the supply, determining who can mint it and who can burn it.
-
-Go to [Camp.sol](contracts/Camp.sol) to see the explained implementation.
+#### How to test
