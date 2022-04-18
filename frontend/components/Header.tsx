@@ -49,6 +49,7 @@ export default function Header({ isOwner = true }) {
           ) : (
             <>
               <Address value={accountData.address} shortened />
+              <div className="px-2 pl-4">0 CAMP</div>
               <Button
                 ml={4}
                 width="auto"
