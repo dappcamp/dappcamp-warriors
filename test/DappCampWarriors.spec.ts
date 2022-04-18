@@ -10,10 +10,7 @@ describe("DappCampWarriors tests", () => {
   let account1: SignerWithAddress;
 
   beforeEach(async () => {
-    dappCampWarriorsContract = await getDappCampWarriors({
-      contractName: "DappCampWarriors",
-      deployParams: [],
-    });
+    dappCampWarriorsContract = await getDappCampWarriors();
     [deployer, account1] = await ethers.getSigners();
   });
 

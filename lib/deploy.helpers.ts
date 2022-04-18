@@ -9,12 +9,10 @@ import {
 
 type GetContractParams<Factory extends ContractFactory> =
   | {
-      contractName: string;
       deployParams: Parameters<Factory["deploy"]>;
       existingContractAddress?: null;
     }
   | {
-      contractName: string;
       deployParams?: null;
       existingContractAddress: string;
     };
@@ -35,7 +33,9 @@ export const getContract = async <
    * and use an existing contract deployed on the address.
    */
   existingContractAddress,
-}: GetContractParams<Factory>): Promise<Contract> => {
+}: GetContractParams<Factory> & {
+  contractName: string;
+}): Promise<Contract> => {
   const ContractFactory = (await ethers.getContractFactory(
     contractName
   )) as Factory;
@@ -55,9 +55,11 @@ export const getContract = async <
   return contract;
 };
 
-export const getCamp = (params: GetContractParams<CampFactory>) =>
-  getContract<CampFactory, Camp>(params);
+export const getCamp = () =>
+  getContract<CampFactory, Camp>({ contractName: "Camp", deployParams: [] });
 
-export const getDappCampWarriors = (
-  params: GetContractParams<DappCampWarriorsFactory>
-) => getContract<DappCampWarriorsFactory, DappCampWarriors>(params);
+export const getDappCampWarriors = () =>
+  getContract<DappCampWarriorsFactory, DappCampWarriors>({
+    contractName: "DappCampWarriors",
+    deployParams: [],
+  });
