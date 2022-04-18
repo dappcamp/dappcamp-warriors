@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.Toastify__toast-body div {
+  word-break: break-word !important;
+}
