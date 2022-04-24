@@ -1,68 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Link from 'next/link'
 
-import { Button } from '@chakra-ui/react'
-import { useAccount, useConnect } from 'wagmi'
+import { connectWallet } from '../utils/common'
+import { AccountContext } from '../contexts/AppContext'
 
-import { Address } from '../components/Address'
-
-export default function Header({ isOwner = true }) {
-  const [{ data: connectData, error: connectError }, connect] = useConnect()
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  })
+export default function Header() {
+  const account = useContext(AccountContext)
+  const isMetamaskConnected = !!account
 
   return (
-    <header className="body-font color-white">
-      <div
-        className="container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row "
-        style={{ justifyContent: 'space-between' }}
-      >
-        <nav className="flex flex-wrap items-center gap-4 text-base lg:w-2/5">
+    <header className="body-font mx-auto max-w-7xl p-4 text-gray-600">
+      <div className="container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row">
+        <a className="title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0">
+          <img src="/favicon.png" className="h-12" />
+          <span className="ml-3 text-xl">DappCamp Warriors</span>
+        </a>
+        <nav className="flex flex-wrap items-center justify-center text-base md:mr-auto	md:ml-4 md:border-l md:border-gray-400 md:py-1 md:pl-4">
           <Link href="/">
-            <a>Home</a>
+            <a className="mr-5 hover:text-gray-900">Home</a>
           </Link>
-          {isOwner && (
-            <Link href="/mint">
-              <a>Mint</a>
-            </Link>
-          )}
+          <Link href="/mint">
+            <a className="mr-5 hover:text-gray-900">Mint</a>
+          </Link>
         </nav>
-        <div className="mx-auto flex-1">
-          <p className="title-font order-first mb-4 flex items-center font-medium md:mb-0 lg:order-none lg:items-center lg:justify-center">
-            <span className="text-2xl" style={{ fontFamily: 'Syne' }}>
-              DappCamp Warriors
-            </span>
+        {!isMetamaskConnected && (
+          <button
+            className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 py-1 px-3 text-base hover:bg-gray-200 focus:outline-none md:mt-0"
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </button>
+        )}
+        {isMetamaskConnected && (
+          <p>
+            {account}
           </p>
-        </div>
-        <nav className="flex flex-wrap items-center text-base lg:w-2/5 lg:justify-end">
-          {!accountData ? (
-            <Button
-              width="20vh"
-              variant="solid"
-              bg="black"
-              colorScheme="gray"
-              onClick={() => connect(connectData.connectors[0])}
-            >
-              Connect Wallet
-            </Button>
-          ) : (
-            <>
-              <Address value={accountData.address} shortened />
-              <div className="px-2 pl-4">0 CAMP</div>
-              <Button
-                ml={4}
-                width="auto"
-                variant="solid"
-                bg="black"
-                colorScheme="gray"
-                onClick={disconnect}
-              >
-                Disconnect
-              </Button>
-            </>
-          )}
-        </nav>
+        )}
       </div>
     </header>
   )

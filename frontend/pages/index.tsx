@@ -1,29 +1,64 @@
-import { useAccount, useConnect } from 'wagmi'
+import React, { useEffect, useState } from "react";
 
-import { Container } from '../components/Container'
-import Header from '../components/Header'
-import NFTs from '../components/NFTs'
+import NFT from "../components/NFT.jsx";
+import Layout from "../components/Layout";
+import NoNFTsIllustration from "../components/NoNFTsIllustration";
 
-const Index = () => {
-  const [{ data: connectData, error: connectError }, connect] = useConnect()
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  })
+import { useAccount, useContract } from "../contexts/AppContext.js";
+
+export default function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [nfts, setNfts] = useState<Array<any>>([]);
+  const contract = useContract();
+  const account = useAccount();
+
+  const loadNfts = async () => {
+    //@ts-ignore
+    const hexCounter = await contract._tokenIds();
+    const counter = parseInt(hexCounter._hex, 16);
+
+    const nfts = await Promise.all(
+      Array(counter)
+        .fill(0)
+        .map(async (_, index) => {
+          const tokenId = index;
+          return {
+            imageUrl: "https://error404.fun/img/illustrations/09@2x.png",
+            tokenId: `${tokenId}`,
+          };
+        })
+    );
+    setIsLoaded(true);
+    setNfts(nfts);
+  };
+
+  useEffect(() => {
+    loadNfts();
+  }, [account]);
 
   return (
-    <div
-      style={{
-        backgroundImage: 'radial-gradient(rgb(54 38 38) 0%, #1A202C 100%)',
-        backgroundSize: '100% 200%',
-        backgroundPosition: '50% 300%',
-        minHeight: '100vh',
-      }}
-    >
-      <Header />
-      {/* <Search /> */}
-      {accountData && <NFTs />}
+    <div className="mx-auto max-w-7xl p-4">
+      {isLoaded && nfts.length === 0 && <NoNFTsIllustration />}
+      <section className="body-font text-gray-600">
+        {/* <p className="text-center text-xl font-semibold">Gallery</p> */}
+        <div className="container mx-auto px-5 pt-12 pb-24">
+          <div className="grid grid-cols-12 gap-8">
+            {nfts.map((nft) => {
+              return (
+                <NFT
+                  imageUrl={nft.imageUrl}
+                  tokenId={nft.tokenId}
+                  key={nft.tokenId}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </div>
-  )
+  );
 }
 
-export default Index
+Home.getLayout = function getLayout(page: any) {
+  return <Layout>{page}</Layout>;
+};

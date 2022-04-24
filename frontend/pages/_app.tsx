@@ -1,44 +1,34 @@
-import '@fontsource/syne/700.css'
-import '@fontsource/inter'
+import { useEffect, useState } from 'react'
 
-import { ChakraProvider } from '@chakra-ui/react'
-import { ethers } from 'ethers'
-import { AppProps } from 'next/app'
-import { chain, defaultChains, Provider } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-
-import { theme } from '../lib/theme'
+import { ContractContext, AccountContext } from '../contexts/AppContext'
+import { getSignedContract, getCurrentAccount } from '../utils/common'
 
 import '../styles/globals.css'
 
-const localProvider = new ethers.providers.JsonRpcProvider(
-  'http://localhost:8545',
-  {
-    name: 'hardhat',
-    chainId: 1337,
+function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
+  const getLayout = Component.getLayout || ((page: any) => page)
+
+  const [contract, setContract] = useState<any>(null)
+  const [account, setAccount] = useState<any>(null)
+
+  const load = async () => {
+    const signedContract = getSignedContract()
+    setContract(signedContract)
+
+    const currentAccount = await getCurrentAccount()
+    setAccount(currentAccount)
   }
-)
 
-const externalProvider = new ethers.providers.AlchemyProvider(
-  'rinkeby',
-  'RN9SHAUtEk-bS3ydXebMgySdU5gIxeCx'
-)
+  useEffect(() => {
+    load()
+  }, [])
 
-const chains = defaultChains
-const connectors = ({ chainId }) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0]
-  return [new InjectedConnector({ chains })]
-}
-
-function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider autoConnect connectors={connectors} provider={externalProvider}>
-      <ChakraProvider resetCSS theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </Provider>
+    <ContractContext.Provider value={contract}>
+      <AccountContext.Provider value={account}>
+        {getLayout(<Component {...pageProps} />)}
+      </AccountContext.Provider>
+    </ContractContext.Provider>
   )
 }
 

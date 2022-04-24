@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 
-import { useAccount, useConnect } from 'wagmi'
-
-import Header from '../components/Header'
+import Layout from '../components/Layout'
 
 import 'react-toastify/dist/ReactToastify.css'
+import { useContract } from '../contexts/AppContext'
 
 export default function Mint({}) {
-  const [{ data: connectData, error: connectError }, connect] = useConnect()
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  })
+  const contract = useContract()
+  const [mintAddress, setMintAddress] = React.useState('')
 
-  const onMintCompletion = () => {
+  const toastErrorMessage = () =>
+    toast.error(
+      `Couldn't mint nft. Please check the address or try again later.`,
+      {
+        position: 'bottom-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    )
+  const toastSuccessMessage = () =>
     toast.success(`🦄 NFT was successfully minted!`, {
       position: 'bottom-center',
       autoClose: 5000,
@@ -23,51 +33,61 @@ export default function Mint({}) {
       draggable: true,
       progress: undefined,
     })
-  }
 
-  const mintNFT = () => {
-    onMintCompletion()
+  const mintNft = async (address: String) => {
+    try {
+      //@ts-ignore
+      const txn = await contract.mint(address)
+      await txn.wait()
+      toastSuccessMessage()
+    } catch (e) {
+      console.log(e)
+      toastErrorMessage()
+    }
   }
 
   return (
-    <div
-      style={{
-        backgroundImage: 'radial-gradient(rgb(54 38 38) 0%, #1A202C 100%)',
-        backgroundSize: '100% 200%',
-        backgroundPosition: '50% 300%',
-        minHeight: '100vh',
-      }}
-    >
-      <Header />
-      <div className="mt-8">
-        <section className="body-font text-gray-600">
-          <div
-            className="border-1 flex flex-col rounded-lg border-gray-100 p-8 md:w-1/2 lg:w-2/6"
-            style={{ margin: 'auto' }}
-          >
-            <h2 className="title-font mb-5 text-lg font-medium text-white">
-              Immortalize your creation
-            </h2>
-            <button
-              className="rounded border-0 bg-indigo-500 py-2 px-8 text-lg text-white hover:bg-indigo-600 focus:outline-none"
-              onClick={() => mintNFT()}
-            >
-              Mint next item in Collection
-            </button>
+    <div className="mx-auto mt-8 max-w-7xl p-4">
+      <section className="body-font text-gray-600">
+        <div className="border-1 m-auto flex flex-col rounded-lg border-gray-100 p-8 md:w-1/2 lg:w-2/6">
+          <h2 className="title-font mb-5 text-lg font-medium ">
+            Immortalize your creation
+          </h2>
+          <div className="relative mb-4">
+            <label className="text-sm leading-7">
+              Mint new NFT to this address
+            </label>
+            <input
+              type="text"
+              className="w-full rounded border border-gray-300 bg-white py-1 px-3 text-base leading-8 outline-none transition-colors duration-200 ease-in-out focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              value={mintAddress}
+              placeholder="0x14dc79964da2c08b23698b3d3cc7ca32193d9955"
+              onChange={(e) => setMintAddress(e.target.value)}
+            />
           </div>
-        </section>
-        <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-      </div>
+          <button
+            className="rounded border-0 bg-indigo-500 py-2 px-8 text-lg text-white hover:bg-indigo-600 focus:outline-none"
+            onClick={() => mintNft(mintAddress)}
+          >
+            Mint item
+          </button>
+        </div>
+      </section>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
+}
+
+Mint.getLayout = function getLayout(page: any) {
+  return <Layout>{page}</Layout>
 }
