@@ -17,4 +17,5 @@ module.exports = {
       { ignores: ["modules"] },
     ],
   },
+  ignorePatterns: ['frontend/*'],
 };
