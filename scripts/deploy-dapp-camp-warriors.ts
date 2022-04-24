@@ -1,7 +1,9 @@
+import { saveAddress } from "../lib/addresses.helpers";
 import { getDappCampWarriors } from "../lib/deploy.helpers";
 
 export async function deployDappCampWarriors() {
-  await getDappCampWarriors();
+  const dappCampWarriorsContract = await getDappCampWarriors();
+  saveAddress("dappCampWarriors", dappCampWarriorsContract.address);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {

@@ -3,8 +3,8 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
-    "test": "npx hardhat test",
-    "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npx hardhat test"
+    "test": "cross-env NODE_ENV=test npx hardhat test",
+    "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npm run test"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0"

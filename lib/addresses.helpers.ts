@@ -25,7 +25,10 @@ export const saveAddress = (
 
   addresses[network.name][addressName] = addressValue;
 
-  writeFileSync(join(__dirname, "../addresses.json"), addresses);
+  writeFileSync(
+    join(__dirname, "../addresses.json"),
+    JSON.stringify(addresses, null, 2)
+  );
 };
 
 export const getAddress = (addressName: keyof AddressGroup) => {

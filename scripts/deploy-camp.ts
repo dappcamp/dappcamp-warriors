@@ -1,7 +1,9 @@
+import { saveAddress } from "../lib/addresses.helpers";
 import { getCamp } from "../lib/deploy.helpers";
 
 export async function deployCamp() {
-  await getCamp();
+  const campContract = await getCamp();
+  saveAddress("camp", campContract.address);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
