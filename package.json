@@ -2,6 +2,7 @@
   "name": "hardhat-project",
   "scripts": {
     "compile": "npx hardhat compile",
+    "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
     "test": "npx hardhat test",
     "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npx hardhat test"
   },
@@ -17,6 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
