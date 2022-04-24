@@ -5,6 +5,9 @@
     "test": "npx hardhat test",
     "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npx hardhat test"
   },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
