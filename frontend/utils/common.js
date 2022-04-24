@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
-import { abi } from '../contracts/DappCampWarriors/abi.json'
-import { address } from '../contracts/DappCampWarriors/address.json'
+import nftContractAbi from '../contracts/DappCampWarriors/abi.json'
+import nftContractAddress from '../contracts/DappCampWarriors/address.json'
 
 export const getSignedContract = () => {
     const { ethereum } = window;
@@ -15,7 +15,7 @@ export const getSignedContract = () => {
     })
 
     const signer = provider.getSigner();
-    return new ethers.Contract(address, abi, signer);
+    return new ethers.Contract(nftContractAddress.address, nftContractAbi.abi, signer);
 }
 
 export const getCurrentAccount = async () => {
