@@ -1,6 +1,6 @@
 import { BaseContract, ContractFactory, Signer } from "ethers";
 import { ethers } from "hardhat";
-import { FactoryOptions, HardhatEthersHelpers } from "hardhat/types";
+import { FactoryOptions } from "hardhat/types";
 import {
   Camp,
   Camp__factory as CampFactory,
