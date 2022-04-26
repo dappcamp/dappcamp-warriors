@@ -1,5 +1,6 @@
 {
   "name": "hardhat-project",
+  "license": "MIT",
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
