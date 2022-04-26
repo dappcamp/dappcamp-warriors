@@ -1,7 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { MockProvider } from "ethereum-waffle";
-import { ethers, waffle } from "hardhat";
+import { ethers } from "hardhat";
 import {
   getCamp,
   getDappCampWarriors,

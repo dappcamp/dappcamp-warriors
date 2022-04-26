@@ -1,15 +1,10 @@
 import { saveAddress } from "../lib/addresses.helpers";
 import { getCamp } from "../lib/deploy.helpers";
 
-export async function deployCamp() {
-  const campContract = await getCamp();
-  saveAddress("camp", campContract.address);
-
-  return campContract;
-}
+export async function setCampOwnership() {}
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deployCamp()
+  setCampOwnership()
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);
