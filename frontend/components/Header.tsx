@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { connectWallet } from '../utils/common'
 import { AccountContext } from '../contexts/AppContext'
 
+import Address from './Address'
+
 export default function Header() {
   const account = useContext(AccountContext)
   const isMetamaskConnected = !!account
@@ -31,11 +33,7 @@ export default function Header() {
             Connect Wallet
           </button>
         )}
-        {isMetamaskConnected && (
-          <p>
-            {account}
-          </p>
-        )}
+        {isMetamaskConnected && <Address address={account} />}
       </div>
     </header>
   )

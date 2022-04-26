@@ -1,48 +1,24 @@
 import React from 'react'
-import { ToastContainer, toast } from 'react-toastify'
 
 import Layout from '../components/Layout'
-
-import 'react-toastify/dist/ReactToastify.css'
-import { useContract } from '../contexts/AppContext'
+import { useDCWarriorsContract } from '../contexts/AppContext'
+import { toastSuccessMessage, toastErrorMessage } from '../utils/toast'
 
 export default function Mint({}) {
-  const contract = useContract()
+  const contract = useDCWarriorsContract()
   const [mintAddress, setMintAddress] = React.useState('')
-
-  const toastErrorMessage = () =>
-    toast.error(
-      `Couldn't mint nft. Please check the address or try again later.`,
-      {
-        position: 'bottom-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }
-    )
-  const toastSuccessMessage = () =>
-    toast.success(`🦄 NFT was successfully minted!`, {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
 
   const mintNft = async (address: String) => {
     try {
       //@ts-ignore
       const txn = await contract.mint(address)
       await txn.wait()
-      toastSuccessMessage()
+      toastSuccessMessage(`🦄 NFT was successfully minted!`)
     } catch (e) {
       console.log(e)
-      toastErrorMessage()
+      toastErrorMessage(
+        `Couldn't mint nft. Please check the address or try again later.`
+      )
     }
   }
 
@@ -73,17 +49,6 @@ export default function Mint({}) {
           </button>
         </div>
       </section>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   )
 }

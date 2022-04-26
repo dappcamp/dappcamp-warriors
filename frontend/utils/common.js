@@ -1,9 +1,18 @@
 import { ethers } from 'ethers';
 
-import nftContractAbi from '../contracts/DappCampWarriors/abi.json'
-import nftContractAddress from '../contracts/DappCampWarriors/address.json'
+// 1: Mainnet
+// 4: Rinkeby
+// 1337: localhost network
 
-export const getSignedContract = () => {
+const networkId = process.env.NEXT_PUBLIC_NETWORK_ID
+const networks = {
+    1: "Mainnet",
+    4: "Rinkeby",
+    1337: "localhost"
+}
+const networkName = networks[networkId]
+
+export const getSignedContract = (address, abi) => {
     const { ethereum } = window;
     if (!ethereum) return null
 
@@ -14,13 +23,16 @@ export const getSignedContract = () => {
         }
     })
 
+    if (ethereum.networkVersion !== networkId) return alert(`Please switch to the ${networkName} network`)
+
     const signer = provider.getSigner();
-    return new ethers.Contract(nftContractAddress.address, nftContractAbi.abi, signer);
+    return new ethers.Contract(address, abi, signer);
 }
 
 export const getCurrentAccount = async () => {
     const { ethereum } = window;
     if (!ethereum) return null
+    if (ethereum.networkVersion !== networkId) return alert(`Please switch to the ${networkName} network`)
 
     const accounts = await ethereum.request({ method: 'eth_accounts' });
 

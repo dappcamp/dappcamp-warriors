@@ -1,40 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-import NFT from "../components/NFT.jsx";
-import Layout from "../components/Layout";
-import NoNFTsIllustration from "../components/NoNFTsIllustration";
+import NFT from '../components/NFT'
+import Layout from '../components/Layout'
+import NoNFTsIllustration from '../components/NoNFTsIllustration'
 
-import { useAccount, useContract } from "../contexts/AppContext.js";
+import { useAccount, useDCWarriorsContract } from '../contexts/AppContext.js'
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [nfts, setNfts] = useState<Array<any>>([]);
-  const contract = useContract();
-  const account = useAccount();
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [nfts, setNfts] = useState<Array<any>>([])
+  const dcWarriorsContract = useDCWarriorsContract()
+  const account = useAccount()
 
   const loadNfts = async () => {
     //@ts-ignore
-    const hexCounter = await contract._tokenIds();
-    const counter = parseInt(hexCounter._hex, 16);
+    const hexCounter = await dcWarriorsContract._tokenIds()
+    const counter = parseInt(hexCounter._hex, 16)
 
     const nfts = await Promise.all(
       Array(counter)
         .fill(0)
         .map(async (_, index) => {
-          const tokenId = index;
+          const tokenId = index
+          //@ts-ignore
+          const owner = await dcWarriorsContract.ownerOf(tokenId)
+
           return {
-            imageUrl: "https://error404.fun/img/illustrations/09@2x.png",
+            imageUrl: 'https://error404.fun/img/illustrations/09@2x.png',
             tokenId: `${tokenId}`,
-          };
+            owner,
+            isStaked: false,
+          }
         })
-    );
-    setIsLoaded(true);
-    setNfts(nfts);
-  };
+    )
+    setIsLoaded(true)
+    setNfts(nfts)
+  }
 
   useEffect(() => {
-    loadNfts();
-  }, [account]);
+    loadNfts()
+  }, [account])
 
   return (
     <div className="mx-auto max-w-7xl p-4">
@@ -46,19 +51,22 @@ export default function Home() {
             {nfts.map((nft) => {
               return (
                 <NFT
+                  key={nft.tokenId}
                   imageUrl={nft.imageUrl}
                   tokenId={nft.tokenId}
-                  key={nft.tokenId}
+                  owner={nft.owner}
+                  isStaked={nft.isStaked}
+                  setNfts={setNfts}
                 />
-              );
+              )
             })}
           </div>
         </div>
       </section>
     </div>
-  );
+  )
 }
 
 Home.getLayout = function getLayout(page: any) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}
