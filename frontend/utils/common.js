@@ -12,7 +12,7 @@ const networks = {
 }
 const networkName = networks[networkId]
 
-export const getSignedContract = (address, abi) => {
+export const getEthereumObject = () => {
     const { ethereum } = window;
     if (!ethereum) return null
 
@@ -23,7 +23,18 @@ export const getSignedContract = (address, abi) => {
         }
     })
 
-    if (ethereum.networkVersion !== networkId) return alert(`Please switch to the ${networkName} network`)
+    if (ethereum.networkVersion !== networkId) {
+        alert(`Please switch to the ${networkName} network`)
+        return null
+    }
+
+    return ethereum
+}
+
+export const getSignedContract = (address, abi) => {
+    const { ethereum } = window;
+
+    const provider = new ethers.providers.Web3Provider(ethereum, "any");
 
     const signer = provider.getSigner();
     return new ethers.Contract(address, abi, signer);
@@ -31,8 +42,6 @@ export const getSignedContract = (address, abi) => {
 
 export const getCurrentAccount = async () => {
     const { ethereum } = window;
-    if (!ethereum) return null
-    if (ethereum.networkVersion !== networkId) return alert(`Please switch to the ${networkName} network`)
 
     const accounts = await ethereum.request({ method: 'eth_accounts' });
 
@@ -40,7 +49,7 @@ export const getCurrentAccount = async () => {
         return null
     }
     const account = accounts[0]
-    return account.toLowerCase()
+    return account
 }
 
 export const connectWallet = async () => {

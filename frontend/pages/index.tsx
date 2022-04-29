@@ -4,12 +4,18 @@ import NFT from '../components/NFT'
 import Layout from '../components/Layout'
 import NoNFTsIllustration from '../components/NoNFTsIllustration'
 
-import { useAccount, useDCWarriorsContract } from '../contexts/AppContext.js'
+import {
+  useAccount,
+  useDCWarriorsContract,
+  useStakingContract,
+} from '../contexts/AppContext.js'
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [nfts, setNfts] = useState<Array<any>>([])
+
   const dcWarriorsContract = useDCWarriorsContract()
+  const stakingContract = useStakingContract()
   const account = useAccount()
 
   const loadNfts = async () => {
@@ -24,12 +30,16 @@ export default function Home() {
           const tokenId = index
           //@ts-ignore
           const owner = await dcWarriorsContract.ownerOf(tokenId)
+          //@ts-ignore
+          const staked = await stakingContract.staked(tokenId)
+          const isStaked =
+            staked.owner !== '0x0000000000000000000000000000000000000000'
 
           return {
             imageUrl: 'https://error404.fun/img/illustrations/09@2x.png',
-            tokenId: `${tokenId}`,
-            owner,
-            isStaked: false,
+            tokenId,
+            owner: isStaked ? staked.owner : owner,
+            isStaked,
           }
         })
     )

@@ -5,6 +5,7 @@ import { connectWallet } from '../utils/common'
 import { AccountContext } from '../contexts/AppContext'
 
 import Address from './Address'
+import Balance from './Balance'
 
 export default function Header() {
   const account = useContext(AccountContext)
@@ -12,8 +13,8 @@ export default function Header() {
 
   return (
     <header className="body-font mx-auto max-w-7xl p-4 text-gray-600">
-      <div className="container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row">
-        <a className="title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0">
+      <div className="container mx-auto flex flex-col flex-wrap items-center gap-4 p-5 md:flex-row lg:gap-0">
+        <a className="title-font flex items-center font-medium text-gray-900 md:mb-0">
           <img src="/favicon.png" className="h-12" />
           <span className="ml-3 text-xl">DappCamp Warriors</span>
         </a>
@@ -33,7 +34,12 @@ export default function Header() {
             Connect Wallet
           </button>
         )}
-        {isMetamaskConnected && <Address address={account} />}
+        {isMetamaskConnected && (
+          <div className="flex gap-2">
+            <Address address={account} />
+            <Balance />
+          </div>
+        )}
       </div>
     </header>
   )

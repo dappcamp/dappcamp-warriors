@@ -1,5 +1,12 @@
 import React from 'react'
-import { useAccount } from '../contexts/AppContext'
+
+import stakingContractAddress from '../contracts/Staking/address.json'
+
+import {
+  useAccount,
+  useDCWarriorsContract,
+  useStakingContract,
+} from '../contexts/AppContext'
 import { toastSuccessMessage } from '../utils/toast'
 
 export default function NFT({
@@ -16,11 +23,21 @@ export default function NFT({
   setNfts: any
 }) {
   const account = useAccount()
-  const canStake = owner.toLowerCase() === account.toLowerCase()
+  const dcWarriorsContract = useDCWarriorsContract()
+  const stakingContract = useStakingContract()
+  const isOwner = owner.toLowerCase() === account.toLowerCase()
 
   const stake = async () => {
-    // const txn = await stakeContract.mint(address)
-    // await txn.wait()
+    //@ts-ignore
+    const approveTxn = await dcWarriorsContract.approve(
+      stakingContractAddress.address,
+      tokenId
+    )
+    await approveTxn.wait()
+
+    //@ts-ignore
+    const txn = await stakingContract.stake(tokenId)
+    await txn.wait()
     toastSuccessMessage('🦄 NFT was successfully staked!')
     setNfts((nfts: any) =>
       nfts.map((nft: any) => {
@@ -36,8 +53,10 @@ export default function NFT({
   }
 
   const unstake = async () => {
-    // const txn = await stakeContract.mint(address)
-    // await txn.wait()
+    console.log(tokenId, owner)
+    //@ts-ignore
+    const txn = await stakingContract.unstake(tokenId)
+    await txn.wait()
     toastSuccessMessage('🦄 NFT was successfully unstaked!')
     setNfts((nfts: any) =>
       nfts.map((nft: any) => {
@@ -58,16 +77,16 @@ export default function NFT({
       key={imageUrl}
     >
       <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-        <img
+        {/* <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
           src={imageUrl}
           alt="blog"
-        />
+        /> */}
         <div className="p-6">
           <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
             WARRIOR #{tokenId}
           </h1>
-          <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+          <h2 className="tracking-widest text-xs title-font font-medium text-gray-900 mb-1">
             OWNER
           </h2>
           <p
@@ -79,7 +98,7 @@ export default function NFT({
           >
             {owner}
           </p>
-          {canStake && !isStaked && (
+          {isOwner && !isStaked && (
             <button
               onClick={stake}
               className="flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg disabled:opacity-50"
@@ -87,7 +106,7 @@ export default function NFT({
               STAKE
             </button>
           )}
-          {canStake && isStaked && (
+          {isOwner && isStaked && (
             <button
               onClick={unstake}
               className="flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg disabled:opacity-50"
