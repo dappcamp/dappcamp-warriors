@@ -52,7 +52,7 @@ contract DappCampWarriors is ERC721("DappCampWarriors", "DWAR"), Ownable {
      * but it's a widely used convention and OpenZeppelin's contracts use it.
      * Read the Solidity style guide here: https://docs.soliditylang.org/en/v0.8.13/style-guide.html.
      */
-    Counters.Counter internal _tokenIds;
+    Counters.Counter public _tokenIds;
 
     /**
      * @dev baseURI is the URI that's used to construct the URL in which the metadata of the NFT is hosted.
