@@ -6,11 +6,11 @@ import { ethers } from 'ethers';
 
 const networkId = process.env.NEXT_PUBLIC_NETWORK_ID
 const networks = {
-    1: "Mainnet",
-    4: "Rinkeby",
+    1: "mainnet",
+    4: "rinkeby",
     1337: "localhost"
 }
-const networkName = networks[networkId]
+export const networkName = networks[networkId]
 
 export const getEthereumObject = () => {
     const { ethereum } = window;

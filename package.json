@@ -2,13 +2,23 @@
   "name": "hardhat-project",
   "license": "MIT",
   "scripts": {
+    "dev": "next dev",
     "compile": "npx hardhat compile",
     "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
+    "deploy:localhost": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network localhost",
     "test": "cross-env NODE_ENV=test npx hardhat test",
     "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npm run test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.5.0"
+    "@openzeppelin/contracts": "^4.5.0",
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "11.6.0",
+    "@nextui-org/react": "^1.0.8-beta.5",
+    "next": "12.0.8",
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
+    "react-toastify": "^8.2.0",
+    "ethers": "^5.6.2"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
@@ -32,8 +42,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-promise": "^5.2.0",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.2",
-    "hardhat": "^2.9.2",
+    "hardhat": "2.8.0",
     "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
@@ -41,7 +50,13 @@
     "solidity-coverage": "^0.7.20",
     "ts-node": "^10.7.0",
     "typechain": "^5.2.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "@types/react": "17.0.38",
+    "@types/react-dom": "17.0.11",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.5",
+    "prettier-plugin-tailwindcss": "^0.1.1",
+    "tailwindcss": "^3.0.7"
   },
   "engines": {
     "node": ">=10.0.0"
