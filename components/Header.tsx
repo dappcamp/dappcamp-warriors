@@ -1,15 +1,31 @@
-import React, { useContext } from 'react'
-import Link from 'next/link'
+import React, { useState, useEffect, useContext } from "react";
+import Link from "next/link";
 
-import { connectWallet } from '../utils/common'
-import { AccountContext } from '../contexts/AppContext'
+import { connectWallet } from "../utils/common";
+import { AccountContext, useDCWarriorsContract } from "../contexts/AppContext";
 
-import Address from './Address'
-import Balance from './Balance'
+import Address from "./Address";
+import Balance from "./Balance";
 
 export default function Header() {
-  const account = useContext(AccountContext)
-  const isMetamaskConnected = !!account
+  const account = useContext(AccountContext);
+  const isMetamaskConnected = !!account;
+
+  const dcWarriorsContract = useDCWarriorsContract();
+
+  const [canShowMintPage, setCanShowMintPage] = useState(false);
+
+  const checkMintPermission = async (account) => {
+    const currAddress = account.toLowerCase();
+    const nftContractOwner = (await dcWarriorsContract.owner()).toLowerCase();
+    console.log({ currAddress, nftContractOwner });
+    setCanShowMintPage(currAddress == nftContractOwner);
+  };
+
+  useEffect(() => {
+    if (!isMetamaskConnected || !dcWarriorsContract) return;
+    checkMintPermission(account);
+  }, [account, isMetamaskConnected, dcWarriorsContract]);
 
   return (
     <header className="body-font mx-auto max-w-7xl p-4 text-gray-600">
@@ -22,9 +38,11 @@ export default function Header() {
           <Link href="/">
             <a className="mr-5 hover:text-gray-900">Home</a>
           </Link>
-          <Link href="/mint">
-            <a className="mr-5 hover:text-gray-900">Mint</a>
-          </Link>
+          {canShowMintPage && (
+            <Link href="/mint">
+              <a className="mr-5 hover:text-gray-900">Mint</a>
+            </Link>
+          )}
         </nav>
         {!isMetamaskConnected && (
           <button
@@ -42,5 +60,5 @@ export default function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }
