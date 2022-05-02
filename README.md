@@ -1,41 +1,30 @@
 # DappCamp Warriors
 
-## Gas optimization
+## Security
 
-### Gas fees
+### Overview
 
-Turing-complete state machines are prone to the [halting problem](https://en.wikipedia.org/wiki/Halting_problem), which implies that the execution can halt at any given point in time (e.g.: a program running a `while (true)` statement).
+This is the most important topic of the course, and the #1 thing to have in mind while you write smart contracts.
 
-How does Ethereum, a decentralized, permissionless, Turing-complete machine prevent people from halting it?
-By imposing a gas fee on every computation.
+At this point, I think the why is clear, so let's go to the how.
 
-Gas fees are essential to the Ethereum network. They:
+### Writing secure code
 
-* Prevent bad actors from spamming the network.
-* Can be adjusted to tip the miners and regulate transaction priority.
-* Are partially burned to diminish the Ether supply.
+#### Rules of thumb
 
-### Why we optimize gas fees
+##### Test your code
 
-When computation and storage have a relevant monetary cost, optimizing them becomes important. We may argue that with future upgrades, using the Ethereum network will get cheaper, but that's not the case for now, so gas optimization is key.
+Just go and test it, preferably before writing it.
 
-I like to divide gas optimizations in two groups:
+##### Use audited code
 
-* Contract deploy gas optimizations.
-* Runtime gas optimizations.
+* Use [OpenZeppelin's contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
+* Try to find an audited version of what you're trying to do in [Certik's website](https://www.certik.com/).
 
-If thousands of people use your contracts everyday, runtime gas optimizations may save your users millions of dollars. On the other side, deploy gas optimizations are used just once<sup>1</sup>, but some contracts, depending on length and initial parameters, can cost thousands of dollars to deploy.
+##### Favor security over performance
 
-1. Note that contracts [can be deployed programmatically by other contracts](https://github.com/Uniswap/v3-core/blob/ed88be38ab2032d82bf10ac6f8d03aa631889d48/contracts/UniswapV3PoolDeployer.sol#L35), in that case, optimizing deploy gas usage also optimizes runtime consumption.
+Like we mentioned previously, gas consumption is a good variable to optimize for. But, if optimizing cost requires writing indirect, hard to follow code, take care and make sure you know what you're doing. Note that this heuristic doesn't imply that you should add a [`nonReentrant` modifier](https://docs.openzeppelin.com/contracts/2.x/api/utils#ReentrancyGuard-nonReentrant--) on every function of your contract.
 
-### Optimizing gas fees
+##### Make your code obvious
 
-In the same way you can save gasoil if you accelerate your car gently, you can save gas by using the techniques we cover on this branch.
-
-#### Preferred variable size
-
-When in doubt, use 256 bit variables like `uint256` or `bytes32`. 
-
-This may sound counterintuitive since at first glance, `uint256` takes more resources than `uint16`. But most of the times it doesn't, since EVM's storage slots have 256 bits, so smaller variables are padded with zeros by the EVM and that has a gas cost. The only case in which you want to use smaller variables is when you are [packing variables](#packing-variables).
-
-##### Packing variables
+Maybe you learned a [bit manipulation](https://en.wikipedia.org/wiki/Bit_manipulation) trick a few days ago and gas optimization seems like a good excuse to try it. Don't. Your code may be readable for you, but it will definitely cause unneeded cognitive overload to your auditors or code reviewers, or even to you in a few weeks when you're deploying your code.
