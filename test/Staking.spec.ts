@@ -154,16 +154,16 @@ describe("Camp tests", () => {
         ethers.utils.parseEther("1")
       );
     });
+  });
 
-    it("Should remove the NFT from the `staked` mapping", async () => {
+  describe("gasCheck", () => {
+    it("Should check the gas used for unstake is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 120_000;
+
       await createValidStake();
-      const stakedData1 = await stakingContract.staked(1);
-      expect(stakedData1.tokenId).to.equal(1);
+      const gasUsed = await stakingContract.estimateGas.unstake(1);
 
-      await stakingContract.unstake(1);
-
-      const stakedData2 = await stakingContract.staked(1);
-      expect(stakedData2.tokenId).to.equal(0);
+      expect(gasUsed).lt(GAS_THRESHOLD);
     });
   });
 });
