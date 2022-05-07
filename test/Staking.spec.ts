@@ -157,6 +157,29 @@ describe("Camp tests", () => {
   });
 
   describe("gasCheck", () => {
+    it("Should check the gas used for contract creation is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 755_000;
+
+      const StakingFactory = await ethers.getContractFactory("Staking");
+      const stakingContract = await StakingFactory.deploy(campContract.address, dappCampWarriorsContract.address);
+
+      const gasLimit = stakingContract.deployTransaction.gasLimit;
+
+      expect(gasLimit).lt(GAS_THRESHOLD);
+    });
+
+    it("Should check the gas used for staking is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 142_000;
+
+      await (
+        await dappCampWarriorsContract.approve(stakingContract.address, 1)
+      ).wait();
+  
+      const gasUsed = await stakingContract.estimateGas.stake(1);
+
+      expect(gasUsed).lt(GAS_THRESHOLD);
+    });
+
     it("Should check the gas used for unstake is below minimum threshold", async () => {
       const GAS_THRESHOLD = 120_000;
 
