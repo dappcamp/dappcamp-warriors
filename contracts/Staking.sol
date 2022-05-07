@@ -54,23 +54,24 @@ contract Staking {
          * @dev This prevents 3 things:
          *   - Unstaking non-existing NFTs (ERC721 ownerOf validates existence)
          *   - Unstaking if msg.sender is not the owner
-         *   - Unstaking NFTs that are not staked (since staked[tokenId].owner will be the zero address)
+         *   - Unstaking NFTs that are not staked (since staking.owner will be the zero address)
          */
+        Stake memory staking = staked[tokenId];
+
         require(
-            staked[tokenId].owner == msg.sender,
+            staking.owner == msg.sender,
             "Staking: only the owner can unstake an NFT"
         );
         require(
-            staked[tokenId].initTimestamp != block.timestamp,
+            staking.initTimestamp != block.timestamp,
             "Staking: cannot unstake an NFT in the same block it was staked"
         );
 
-        uint256 stakedSeconds = block.timestamp - staked[tokenId].initTimestamp;
+        uint256 stakedSeconds = block.timestamp - staking.initTimestamp;
 
-        delete staked[tokenId];
+        delete staking;
 
         dappCampWarriors.transferFrom(address(this), msg.sender, tokenId);
-
         camp.mint(msg.sender, stakedSeconds * rewardPerSecondInWei);
     }
 }
