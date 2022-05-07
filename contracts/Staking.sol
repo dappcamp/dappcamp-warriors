@@ -2,13 +2,12 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
-
-import "./Camp.sol";
+import "./interfaces/ICamp.sol";
 
 /* solhint-disable not-rely-on-time */
 contract Staking {
-    Camp public camp;
-    IERC721 public dappCampWarriors;
+    address public campAddress;
+    address public dappCampWarriorsAddress;
 
     struct Stake {
         address owner;
@@ -27,8 +26,8 @@ contract Staking {
     uint256 public rewardPerSecondInWei = 1000000000000000000;
 
     constructor(address _camp, address _dappCampWarriors) {
-        camp = Camp(_camp);
-        dappCampWarriors = IERC721(_dappCampWarriors);
+        campAddress = _camp;
+        dappCampWarriorsAddress = _dappCampWarriors;
     }
 
     function stake(uint256 tokenId) public {
@@ -39,11 +38,11 @@ contract Staking {
          *   - Staking NFTs that are already staked (since the owner is this contract)
          */
         require(
-            dappCampWarriors.ownerOf(tokenId) == msg.sender,
+            IERC721(dappCampWarriorsAddress).ownerOf(tokenId) == msg.sender,
             "Staking: only the owner can stake an NFT"
         );
 
-        dappCampWarriors.transferFrom(msg.sender, address(this), tokenId);
+        IERC721(dappCampWarriorsAddress).transferFrom(msg.sender, address(this), tokenId);
 
         // solhint-disable-next-line not-rely-on-time
         staked[tokenId] = Stake(msg.sender, tokenId, block.timestamp);
@@ -71,8 +70,8 @@ contract Staking {
 
         delete staking;
 
-        dappCampWarriors.transferFrom(address(this), msg.sender, tokenId);
-        camp.mint(msg.sender, stakedSeconds * rewardPerSecondInWei);
+        IERC721(dappCampWarriorsAddress).transferFrom(address(this), msg.sender, tokenId);
+        ICamp(campAddress).mint(msg.sender, stakedSeconds * rewardPerSecondInWei);
     }
 }
 /* solhint-enable not-rely-on-time */
