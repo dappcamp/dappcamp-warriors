@@ -7,7 +7,7 @@
 Turing-complete state machines are prone to the [halting problem](https://en.wikipedia.org/wiki/Halting_problem), which implies that the execution can halt at any given point in time (e.g.: a program running a `while (true)` statement).
 
 How does Ethereum, a decentralized, permissionless, Turing-complete machine prevent people from halting it?
-By imposing a gas fee on every computation.
+By imposing a gas fee on computation.
 
 Gas fees are essential to the Ethereum network. They:
 
@@ -17,9 +17,11 @@ Gas fees are essential to the Ethereum network. They:
 
 ### Why we optimize gas fees
 
-When computation and storage have a relevant monetary cost, optimizing them becomes important. We may argue that with future upgrades, using the Ethereum network will get cheaper, but that's not the case for now, so gas optimization is key.
+When computation and storage have a relevant monetary cost, optimizing them becomes important.
 
-I like to divide gas optimizations in two groups:
+We may argue that using the Ethereum network will get cheaper with future upgrades, but that's not the case for now so gas optimization is key.
+
+Gas optimizations can be divided in two main groups:
 
 * Contract deploy gas optimizations.
 * Runtime gas optimizations.
