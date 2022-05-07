@@ -32,10 +32,5 @@ If thousands of people use your contracts everyday, runtime gas optimizations ma
 
 In the same way you can save gasoil if you accelerate your car gently, you can save gas by using the techniques we cover on this branch.
 
-#### Preferred variable size
-
-When in doubt, use 256 bit variables like `uint256` or `bytes32`. 
-
-This may sound counterintuitive since at first glance, `uint256` takes more resources than `uint16`. But most of the times it doesn't, since EVM's storage slots have 256 bits, so smaller variables are padded with zeros by the EVM and that has a gas cost. The only case in which you want to use smaller variables is when you are [packing variables](#packing-variables).
-
-##### Packing variables
+Take a look at [NonOptimized](/contracts/gas-optimization/NonOptimized.sol) and [Optimized](/contracts/gas-optimization/Optimized.sol)
+to see multiple optimization tricks.
