@@ -1,5 +1,5 @@
 # DappCamp Warriors
 
-## NFT staking
+## Deploy
 
 ### Overview
