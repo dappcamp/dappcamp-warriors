@@ -5,7 +5,7 @@
 ### Pre-requisites
 
 * Basic Typescript knowledge helps a lot.
-* Recommended: VSCode (IntelliSense works like a charm with Typescript), see more [here](https://code.visualstudio.com/docs/editor/intellisense#_intellisense-features).
+* Recommended: VS Code (IntelliSense works like a charm with Typescript), see more [here](https://code.visualstudio.com/docs/editor/intellisense#_intellisense-features).
 
 ### Overview
 
@@ -16,7 +16,7 @@ Typescript syntax may slow you down a bit at first, but interacting with fully t
 #### Why testing?
 
 You **should** write tests for your Solidity code.
-Remember, we're not launching rockets like Elon Musk, but our software is still mission critical, it potentially will handle millions of highly liquid, irrecoverable dollars, and we should take as many security measures as we can.
+Remember, we're not launching rockets like [Elon Musk](https://c.tenor.com/RaKoyZ5MI9cAAAAC/doge-rocket.gif), but our software is still mission critical, it potentially will handle millions of highly liquid, irrecoverable ETH and tokens, and we should take as many security measures as we can.
 
 To be honest, I didn't write many unit tests in (most) of my Web2 projects. It's not a big deal if the button that allows people changing their lastname is broken on a social media startup with 100 monthly active users. Someone will report it and, since it's a startup, (hopefully) the team will be responsive on fixing it. But while I didn't write tests for lastname buttons, I do [TDD](https://en.wikipedia.org/wiki/Test-driven_development) for my Solidity code. And that's because each piece of software has their own tradeoffs and should be treated differently.
 
