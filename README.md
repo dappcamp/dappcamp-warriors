@@ -1,28 +1,34 @@
 # DappCamp Warriors
 
-## Create ERC20
+## Testing
+
+### Pre-requisites
+
+* Basic Typescript knowledge helps a lot.
+* Recommended: VS Code (IntelliSense works like a charm with Typescript), see more [here](https://code.visualstudio.com/docs/editor/intellisense#_intellisense-features).
 
 ### Overview
 
-We already scaffolded the project, created the contracts of our NFT collection, and imported third-party contracts.
+We added 3 new files: [test/Camp.spec.ts](test/Camp.spec.ts), [test/DappCampWarriors.spec.ts](test/DappCampWarriors.spec.ts), and [lib/deploy.helpers.ts](lib/deploy.helpers.ts). Like in previous branches, each one of them is fully commented explaining everything that's happening.
 
-Now, it's time to create our fungible token: **$CAMP**.
+Typescript syntax may slow you down a bit at first, but interacting with fully typed libraries and contracts will save you hours of debugging and reading docs.
 
-We will use an OpenZeppelin contract that implements the [ERC20](https://ethereum.org/es/developers/docs/standards/tokens/erc-20/) standard, which makes things pretty easy.
+#### Why testing?
 
-The contract could be as simple as this:
+You **should** write tests for your Solidity code.
+Remember, we're not launching rockets like [Elon Musk](https://c.tenor.com/RaKoyZ5MI9cAAAAC/doge-rocket.gif), but our software is still mission critical, it potentially will handle millions of highly liquid, irrecoverable ETH and tokens, and we should take as many security measures as we can.
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+To be honest, I didn't write many unit tests in (most) of my Web2 projects. It's not a big deal if the button that allows people changing their lastname is broken on a social media startup with 100 monthly active users. Someone will report it and, since it's a startup, (hopefully) the team will be responsive on fixing it. But while I didn't write tests for lastname buttons, I do [TDD](https://en.wikipedia.org/wiki/Test-driven_development) for my Solidity code. And that's because each piece of software has their own tradeoffs and should be treated differently.
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+Testing is not a [silver bullet](https://en.wikipedia.org/wiki/No_Silver_Bullet), but it's an extra layer of confidence on the
+correctness of our code.
 
-contract Camp is ERC20 {
-    constructor() ERC20("Camp", "CAMP") {}
-}
-```
+#### TDD
 
-But we will add some extra magic to have more control over the supply, determining who can mint it and who can burn it.
+I recommend you trying TDD (in a nutshell, writing the tests before the code). It will help you think about potential security issues and edge cases.
 
-Go to [Camp.sol](contracts/Camp.sol) to see the explained implementation.
+#### Waffle
+
+Hardhat [recommends](https://hardhat.org/guides/waffle-testing.html) using their [Waffle](https://ethereum-waffle.readthedocs.io/en/latest/) plugin to test our contracts. Waffle is built on top of [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/), two of the most widely used JS testing libraries.
+
+Waffle adds some Solidity-specific APIs on top of Chai, allowing us to test events, reverts, and other common constructs.
