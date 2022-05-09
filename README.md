@@ -1,6 +1,6 @@
 # DappCamp Warriors
 
-This repo contains a step by step walkthrough towards a production-ready dApp that combines an NFT collection, an ERC20 token, and DeFi.
+This repo contains a step by step walkthrough towards a fully fledged dApp that combines an NFT collection, an ERC20 token, and DeFi.
 
 ## Repo structure
 
