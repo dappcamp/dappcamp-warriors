@@ -3,15 +3,15 @@
   "license": "MIT",
   "scripts": {
     "compile": "npx hardhat compile",
+    "clean": "npx hardhat clean",
     "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
     "test": "cross-env NODE_ENV=test npx hardhat test",
+    "test:report-gas": "cross-env REPORT_GAS=true npx hardhat test",
     "test:watch": "echo You need to install 'entr' to run this command && find contracts test lib -iname '*.sol' -o -iname '*.spec.*' -o -iname '*.test.*' -o -iname '*.ts' | entr -cnr npm run test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.5.0"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.5.0"
+    "@openzeppelin/contracts": "^4.5.0",
+    "hardhat-contract-sizer": "^2.5.1"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
