@@ -8,6 +8,9 @@ If you take a look of the existing branches, you'll see that there's multiple nu
 
 Each branch has its own readme, like this one, with an overview of the progress made towards the final dApp.
 
+Also, if you go to the [pull requests](https://github.com/dappcamp/dappcamp-warriors/pulls), every branch has a PR
+to the previous one, which is useful to see the [diff](https://github.com/dappcamp/dappcamp-warriors/pull/2/files).
+
 ## dApp overview
 
 Some of the topics we'll cover in this walkthrough are:
