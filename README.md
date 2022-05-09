@@ -15,14 +15,15 @@ to the previous one, which is useful to see the [diff](https://github.com/dappca
 
 Some of the topics we'll cover in this walkthrough are:
 
-* Building an [ERC721](https://eips.ethereum.org/EIPS/eip-721) (non-fungible) token.
-* Building an [ERC20](https://eips.ethereum.org/EIPS/eip-20) (fungible) token.
-* Creating a staking contract (DeFi).
-* Testing.
-* Deploying contracts.
-* Gas optimization.
-* Security.
-* Interacting with your contracts from the browser.
+* Scaffolding a [Hardhat](https://hardhat.org/) project. [1-scaffolding](https://github.com/dappcamp/dappcamp-warriors/tree/1-scaffolding).
+* Building an [ERC721](https://eips.ethereum.org/EIPS/eip-721) (non-fungible) token. [2-create-erc721](https://github.com/dappcamp/dappcamp-warriors/tree/2-create-erc721).
+* Building an [ERC20](https://eips.ethereum.org/EIPS/eip-20) (fungible) token. [3-create-erc20](https://github.com/dappcamp/dappcamp-warriors/tree/3-create-erc20).
+* Testing. [4-testing](https://github.com/dappcamp/dappcamp-warriors/tree/4-testing).
+* Creating a staking contract (DeFi). [5-nft-staking](https://github.com/dappcamp/dappcamp-warriors/tree/5-nft-staking).
+* Deploying contracts. [6-deploy](https://github.com/dappcamp/dappcamp-warriors/tree/6-deploy).
+* Gas optimization. [7-gas-optimization](https://github.com/dappcamp/dappcamp-warriors/tree/7-gas-optimization).
+* Security. [8-security](https://github.com/dappcamp/dappcamp-warriors/tree/1-scaffolding).
+* Interacting with your contracts from the browser. [9-ui](https://github.com/dappcamp/dappcamp-warriors/tree/9-ui).
 
 ## Questions and help
 
