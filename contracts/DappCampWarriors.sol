@@ -33,7 +33,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * a lot of Solidity's reusability happens via inheritance.
  * ERC721 receives two hardcoded params, which its constructor will receive as arguments.
  * Note that the params can be dynamic too, you can see an example here: https://solidity-by-example.org/constructor/.
- * Ownable doesn't receive any param, after extending it our contract is able, for example, to use the `onlyOwner` modifier.
+ * Ownable doesn't receive any param, after extending it our contract is able to use the `onlyOwner` modifier, among others.
  */
 contract DappCampWarriors is ERC721("DappCampWarriors", "DWAR"), Ownable {
     /**
@@ -77,7 +77,7 @@ contract DappCampWarriors is ERC721("DappCampWarriors", "DWAR"), Ownable {
     }
 
     /**
-     * @dev Overriding a function from OpenZeppelin's ERC-721
+     * @dev Overriding a function from OpenZeppelin's ERC-721.
      */
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
