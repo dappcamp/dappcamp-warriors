@@ -77,7 +77,7 @@ contract DappCampWarriors is ERC721("DappCampWarriors", "DWAR"), Ownable {
     }
 
     /**
-     * @dev Overriding a function from OpenZeppelin's ERC-721
+     * @dev Overriding a function from OpenZeppelin's ERC-721.
      */
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
