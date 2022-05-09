@@ -23,7 +23,7 @@ OpenZeppelin is the organization that pioneered standards for smart contract dev
 
 #### Some benefits of using their contracts
 
-* Audited by default. Since our code manipulates money, a common industry practice is auditing it, that means sending your source code to a company so they analyze it and make sure that it doesn't have vulnerabilities. OpenZeppelin pretty much invented the concept of smart contract auditing, so if you use their code, your auditing costs (time and money) will be lower.
+* Audited by default. Since our code manipulates money, a common industry practice is auditing it, that means sending your source code to a company so they analyze it making sure that it doesn't have vulnerabilities. OpenZeppelin pretty much invented the concept of smart contract auditing, so if you use their code, your auditing costs (time and money) will be lower.
 * Guarantee of the best industry standards. They have been writing contracts with a focus on security and good practices for a long time, the code you see today is the result of years of iterations, discussions, and ideas, so don't reinvent the wheel and go with their implementations always that you can.
 
 I recommend you taking the time to read their contracts and learn from them. Use their codebases, for example [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts), to learn Solidity's constructs, syntax, good practices, coding style, etc.
