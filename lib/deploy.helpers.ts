@@ -61,7 +61,9 @@ export const getContract = async <
     return ContractFactory.attach(existingContractAddress!) as Contract;
   }
 
-  const contract = (await ContractFactory.deploy(...deployParams!)) as Contract;
+  const contract = (await ContractFactory.deploy(
+    ...(deployParams || [])
+  )) as Contract;
   await contract.deployed();
 
   enableLogs && console.log(`Deployed ${contractName} to ${contract.address}`);
@@ -72,19 +74,21 @@ type GetContractConfig = {
   getContractFactoryParams?: GetContractFactoryParams;
 };
 
-export const getCamp = (getContractConfig: GetContractConfig = {}) =>
+export const getCamp = (
+  getContractConfig: GetContractParams<CampFactory> = { deployParams: [] }
+) =>
   getContract<CampFactory, Camp>({
     contractName: "Camp",
-    deployParams: [],
     ...getContractConfig,
   });
 
 export const getDappCampWarriors = (
-  getContractConfig: GetContractConfig = {}
+  getContractConfig: GetContractParams<DappCampWarriorsFactory> = {
+    deployParams: [],
+  }
 ) =>
   getContract<DappCampWarriorsFactory, DappCampWarriors>({
     contractName: "DappCampWarriors",
-    deployParams: [],
     ...getContractConfig,
   });
 
