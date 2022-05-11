@@ -1,38 +1,46 @@
 # DappCamp Warriors
 
-## Gas optimization
+## Security
 
-### Gas fees
+This is the most important topic of the course, and the #1 thing to have in mind while you write smart contracts.
 
-Turing-complete state machines are prone to the [halting problem](https://en.wikipedia.org/wiki/Halting_problem), which implies that the execution can halt at any given point in time (e.g.: a program running a `while (true)` statement).
+At this point, I think the why is clear, so let's go to the how.
 
-How does Ethereum, a decentralized, permissionless, Turing-complete machine prevent people from halting it?
-By imposing a gas fee on computation.
+### Rules of thumb for writing secure code
 
-Gas fees are essential to the Ethereum network. They:
+#### Test your code
 
-* Prevent bad actors from spamming the network.
-* Can be adjusted to tip the miners and regulate transaction priority.
-* Are partially burned to diminish the Ether supply.
+Aim for +90% coverage. Preferably, test it before writing it.
 
-### Why we optimize gas fees
+#### Use audited code
 
-When computation and storage have a relevant monetary cost, optimizing them becomes important.
+* Use [OpenZeppelin's contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
+* Try to find an audited version of what you're trying to do in [Certik's website](https://www.certik.com/).
 
-We may argue that using the Ethereum network will get cheaper with future upgrades, but that's not the case for now so gas optimization is key.
+#### Favor security over performance
 
-Gas optimizations can be divided in two main groups:
+Like we mentioned previously, gas consumption is a good variable to optimize for. But, if optimizing cost requires writing unreadable code or skipping security measures, take care and make sure you know what you're doing.
 
-* Contract deploy gas optimizations.
-* Runtime gas optimizations.
+Note that this heuristic doesn't imply that your code should be full of naive and costly security measures (like adding a [`nonReentrant` modifier](https://docs.openzeppelin.com/contracts/2.x/api/utils#ReentrancyGuard-nonReentrant--) on every function).
 
-If thousands of people use your contracts everyday, runtime gas optimizations may save your users millions of dollars. On the other side, deploy gas optimizations are used just once<sup>1</sup>, but some contracts, depending on length and initial parameters, can cost thousands of dollars to deploy.
+#### Make your code obvious
 
-1. Note that contracts [can be deployed programmatically by other contracts](https://github.com/Uniswap/v3-core/blob/ed88be38ab2032d82bf10ac6f8d03aa631889d48/contracts/UniswapV3PoolDeployer.sol#L35), in that case, optimizing deploy gas usage also optimizes runtime consumption.
+Maybe you learned a [bit manipulation](https://en.wikipedia.org/wiki/Bit_manipulation) trick a few days ago and gas optimization seems like a good excuse to try it. Don't. Your code may be readable for you, but it will definitely cause unneeded cognitive overload to your auditors or code reviewers, or even to you in a few weeks when you're deploying your code.
 
-### Optimizing gas fees
+<!-- #### Use circuit breakers -->
 
-In the same way you can save gasoil if you accelerate your car gently, you can save gas by using the techniques we cover on this branch.
+### Security resources
 
-Take a look at [NonOptimized](/contracts/gas-optimization/NonOptimized.sol) and [Optimized](/contracts/gas-optimization/Optimized.sol)
-to see multiple optimization tricks.
+* [Consensys security best practices](https://consensys.github.io/smart-contract-best-practices/)
+
+* [Smart Contract Weakness Classification and Test Cases](https://swcregistry.io/)
+
+* [Security considerations (Solidity docs)](https://docs.soliditylang.org/en/develop/security-considerations.html)
+
+* [Twitter thread about security](https://twitter.com/The3D_/status/1485308693935763458)
+
+* [OpenZeppelin audits](https://blog.openzeppelin.com/security-audits/)
+
+* [Certik audits](https://www.certik.com/)
+
+* [How to become a smart contract auditor](https://cmichel.io/how-to-become-a-smart-contract-auditor/)
