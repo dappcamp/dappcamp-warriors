@@ -153,16 +153,39 @@ describe("Camp tests", () => {
         ethers.utils.parseEther("1")
       );
     });
+  });
 
-    it("Should remove the NFT from the `staked` mapping", async () => {
+  describe("gasCheck", () => {
+    it("Should check the gas used for contract creation is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 755_000;
+
+      const StakingFactory = await ethers.getContractFactory("Staking");
+      const stakingContract = await StakingFactory.deploy(campContract.address, dappCampWarriorsContract.address);
+
+      const gasLimit = stakingContract.deployTransaction.gasLimit;
+
+      expect(gasLimit).lt(GAS_THRESHOLD);
+    });
+
+    it("Should check the gas used for staking is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 142_000;
+
+      await (
+        await dappCampWarriorsContract.approve(stakingContract.address, 1)
+      ).wait();
+  
+      const gasUsed = await stakingContract.estimateGas.stake(1);
+
+      expect(gasUsed).lt(GAS_THRESHOLD);
+    });
+
+    it("Should check the gas used for unstake is below minimum threshold", async () => {
+      const GAS_THRESHOLD = 120_000;
+
       await createValidStake();
-      const stakedData1 = await stakingContract.staked(1);
-      expect(stakedData1.tokenId).to.equal(1);
+      const gasUsed = await stakingContract.estimateGas.unstake(1);
 
-      await stakingContract.unstake(1);
-
-      const stakedData2 = await stakingContract.staked(1);
-      expect(stakedData2.tokenId).to.equal(0);
+      expect(gasUsed).lt(GAS_THRESHOLD);
     });
   });
 });
