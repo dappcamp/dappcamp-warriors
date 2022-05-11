@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
+    "build": "next build",
     "compile": "npx hardhat compile",
     "clean": "npx hardhat clean",
     "deploy:local": "cross-env EXECUTE_PROGRAMMATICALLY=true npx hardhat run scripts/deploy.ts --network hardhat",
