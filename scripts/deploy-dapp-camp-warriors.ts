@@ -4,6 +4,8 @@ import { getDappCampWarriors } from "../lib/deploy.helpers";
 export async function deployDappCampWarriors() {
   const dappCampWarriorsContract = await getDappCampWarriors();
   saveAddress("dappCampWarriors", dappCampWarriorsContract.address);
+
+  return dappCampWarriorsContract;
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
