@@ -23,9 +23,33 @@ Like we mentioned previously, gas consumption is a good variable to optimize for
 
 Note that this heuristic doesn't imply that your code should be full of naive and costly security measures (like adding a [`nonReentrant` modifier](https://docs.openzeppelin.com/contracts/2.x/api/utils#ReentrancyGuard-nonReentrant--) on every function).
 
-#### Make your code obvious
+#### Make your code readable
 
 Maybe you learned a [bit manipulation](https://en.wikipedia.org/wiki/Bit_manipulation) trick a few days ago and gas optimization seems like a good excuse to try it. Don't. Your code may be readable for you, but it will definitely cause unneeded cognitive overload to your auditors or code reviewers, or even to you in a few weeks when you're deploying your code.
+
+#### Make your code obvious
+
+Like Joel Spolsky said, [make your wrong code look wrong](https://www.joelonsoftware.com/2005/05/11/making-wrong-code-look-wrong/).
+If your contract calls untrusted third-party contracts, make it explicit:
+
+```solidity
+// bad
+Bank.withdraw(100); // Unclear whether trusted or untrusted
+
+function makeWithdrawal(uint amount) { // Isn't clear that this function is potentially unsafe
+    Bank.withdraw(amount);
+}
+
+// good
+UntrustedBank.withdraw(100); // untrusted external call
+TrustedBank.withdraw(100); // external but trusted bank contract maintained by XYZ Corp
+
+function makeUntrustedWithdrawal(uint amount) {
+    UntrustedBank.withdraw(amount);
+}
+```
+
+> Code snippet from [Consensys](https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/#mark-untrusted-contracts).
 
 <!-- #### Use circuit breakers -->
 

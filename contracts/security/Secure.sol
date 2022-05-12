@@ -38,4 +38,35 @@ contract Secure is ReentrancyGuard {
         require(success, "Error withdrawing balance.");
         userBalances[msg.sender] = 0;
     }
+
+    /**
+     * @dev Pull don't push
+     * See: https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/#favor-pull-over-push-for-external-calls
+     */
+
+    address public highestBidder;
+    uint256 public highestBid;
+    mapping(address => uint256) public refunds;
+
+    function bid() public payable {
+        require(msg.value >= highestBid, "Bid is too low");
+
+        if (highestBidder != address(0)) {
+            refunds[highestBidder] += highestBid;
+        }
+
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+    }
+
+    /**
+     * @dev Make the users of your contract pull their balance.
+     * Don't push it to them since it allows them to manipulate your bid.
+     */
+    function withdrawRefund() external {
+        uint256 refund = refunds[msg.sender];
+        refunds[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: refund}("");
+        require(success, "Can't withdraw");
+    }
 }
