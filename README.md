@@ -1,46 +1,74 @@
 # DappCamp Warriors
 
-## Security
+## Frontend
 
-This is the most important topic of the course, and the #1 thing to have in mind while you write smart contracts.
+In this part, we add the frontend for our Dapp. It is built with Next.js and ethers.js.
 
-At this point, I think the why is clear, so let's go to the how.
+Structure:
+- src/pages - Routes for our app
+- src/components - React components for our app
+- src/contexts.js - React contexts to make state available to nested components
+- public - Static resources for our app
+- tailwind.config.js, postcss.config.js, next.config..js - Configuration files for Next.js and Tailwind
 
-### Rules of thumb for writing secure code
+Note: For the NFT metadatas we are using the NFTs and metadatas generated using the "warriors-generator" from this repo: https://github.com/DappCamp-Cohort-2/dappcamp-warriors
 
-#### Test your code
+### Local Development Instructions
 
-Aim for +90% coverage. Preferably, test it before writing it.
+```
+In Terminal Tab 1
+npx hardhat node
 
-#### Use audited code
+In Terminal Tab 2
+npm run deploy:localhost
+npm run dev
+```
 
-* Use [OpenZeppelin's contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
-* Try to find an audited version of what you're trying to do in [Certik's website](https://www.certik.com/).
+### Overview of the steps
 
-#### Favor security over performance
+#### Step 1: [Add frontend boilerplate](https://github.com/dappcamp/dappcamp-warriors/commit/e35a266349017930195b628c24f0acf9b4a90105)
 
-Like we mentioned previously, gas consumption is a good variable to optimize for. But, if optimizing cost requires writing unreadable code or skipping security measures, take care and make sure you know what you're doing.
+ - Install Next.js, tailwind, and ethers.js and configure them and their plugins
+	 - Next.js is Node.js based framework for building server-side rendered React applications
+	 - Tailwind is a library that provides utility css classes to style elements
+	 - Ethers.js is a library for interacting with the Ethereum Blockchain
+ - Setup meta tags by adding a [_document.jsx file](https://nextjs.org/docs/advanced-features/custom-document)
+ - Add utility methods for common operations like fetching connected accounts and signing a contract
 
-Note that this heuristic doesn't imply that your code should be full of naive and costly security measures (like adding a [`nonReentrant` modifier](https://docs.openzeppelin.com/contracts/2.x/api/utils#ReentrancyGuard-nonReentrant--) on every function).
+**Learning resources**
+React functional components: https://beta.reactjs.org/
+Introduction to Next.js - https://nextjs.org/learn/foundations/about-nextjs
+Tailwind - https://tailwindcss.com/docs/utility-first
+Ethers.js - https://docs.ethers.io
 
-#### Make your code obvious
+#### Step 2: [Add Connect Wallet button and Balance counter](https://github.com/dappcamp/dappcamp-warriors/commit/f204b09195d891e7b79903a8392854ca18bf0eaf)
 
-Maybe you learned a [bit manipulation](https://en.wikipedia.org/wiki/Bit_manipulation) trick a few days ago and gas optimization seems like a good excuse to try it. Don't. Your code may be readable for you, but it will definitely cause unneeded cognitive overload to your auditors or code reviewers, or even to you in a few weeks when you're deploying your code.
+* Setup react contexts to share the connected account and contracts across pages in our app 
+	* [Passing Data Deeply with Context](https://beta.reactjs.org/learn/passing-data-deeply-with-context)
+* Add Connect Wallet and Balance counter to the header
+	* Clicking on the connect wallet will prompt the user to connect metamask to our app
+	* Balance is fetched by reading the ERC20 balance from the Camp contract. It is refreshed every 1 second.
 
-<!-- #### Use circuit breakers -->
+#### Step 3: [Add NFTs grid to home page](https://github.com/dappcamp/dappcamp-warriors/commit/d4d2763dac4498c22961c1352e211e38c1fee9da)
 
-### Security resources
+* In this step, we add an NFT grid to the home page. The page queries the value of "_tokenIds" from the Warriors contract and displays the details for each NFT.
 
-* [Consensys security best practices](https://consensys.github.io/smart-contract-best-practices/)
+#### Step 4: [Add Mint NFT form](https://github.com/dappcamp/dappcamp-warriors/commit/b62e5abf6d789c3e66f4df9dce8bab10960efc58)
 
-* [Smart Contract Weakness Classification and Test Cases](https://swcregistry.io/)
+* In this step, we add a form to the "Mint" page. This form will only be visible to the owner of the contract. The owner will be able to mint a new NFT to a particular address using the form. 
+* The mint button makes call to the Warriors contract
 
-* [Security considerations (Solidity docs)](https://docs.soliditylang.org/en/develop/security-considerations.html)
+#### Step 5: [Add stake and unstake buttons](https://github.com/dappcamp/dappcamp-warriors/commit/d7c2d38968351165bfcb7107f99b22eb0ae336ac)
 
-* [Twitter thread about security](https://twitter.com/The3D_/status/1485308693935763458)
+* In this step, we add "stake and "unstake" buttons to the NFT component. The logged-in users will be able to see these buttons next to the NFTs they own.
+* The stake and unstake buttons make calls to the Staking contract
 
-* [OpenZeppelin audits](https://blog.openzeppelin.com/security-audits/)
+### Resources
 
-* [Certik audits](https://www.certik.com/)
+Additional learning resources
+* [Master Ethers.js for Blockchain](https://www.youtube.com/watch?v=yk7nVp5HTCk)
+* [The Complete Guide to Full Stack Web3 Development](https://www.youtube.com/watch?v=nRMo5jjgCr4&t)
 
-* [How to become a smart contract auditor](https://cmichel.io/how-to-become-a-smart-contract-auditor/)
+We use barebones ethers.js to interact with our smart contracts. To abstract some of the common tasks and speed up your development, you can take a look at the following libraries:
+* https://github.com/tmm/wagmi
+* https://github.com/developer-DAO/web3-ui

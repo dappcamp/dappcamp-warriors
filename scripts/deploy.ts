@@ -5,10 +5,14 @@ import { deployStaking } from "./deploy-staking";
 
 async function main() {
   const campContract = await deployCamp();
-  await deployDappCampWarriors();
+  const dappCampWarriorsContract = await deployDappCampWarriors();
   await deployStaking();
 
   await campContract.transferOwnership(getAddress("staking"));
+  await dappCampWarriorsContract.setBaseURI(
+    process.env.NFT_METADATA_BASE_URI ||
+      "https://gateway.pinata.cloud/ipfs/QmRLwGUPTTEfnfyzjqztJjq9NKJQY28ZVTf1qcEey3X3Rz"
+  );
 }
 
 main()
