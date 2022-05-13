@@ -1,22 +1,27 @@
-import { BaseContract, ContractFactory } from "ethers";
+import { BaseContract, ContractFactory, Signer } from "ethers";
 import { ethers } from "hardhat";
+import { FactoryOptions } from "hardhat/types";
 import {
   Camp,
   Camp__factory as CampFactory,
   DappCampWarriors,
   DappCampWarriors__factory as DappCampWarriorsFactory,
+  Staking,
+  Staking__factory as StakingFactory,
 } from "../typechain";
+
+type GetContractFactoryParams = Signer | FactoryOptions;
 
 type GetContractParams<Factory extends ContractFactory> =
   | {
-      contractName: string;
       deployParams: Parameters<Factory["deploy"]>;
       existingContractAddress?: null;
+      getContractFactoryParams?: GetContractFactoryParams;
     }
   | {
-      contractName: string;
       deployParams?: null;
       existingContractAddress: string;
+      getContractFactoryParams?: GetContractFactoryParams;
     };
 
 /**
@@ -35,9 +40,13 @@ export const getContract = async <
    * and use an existing contract deployed on the address.
    */
   existingContractAddress,
-}: GetContractParams<Factory>): Promise<Contract> => {
+  getContractFactoryParams,
+}: GetContractParams<Factory> & {
+  contractName: string;
+}): Promise<Contract> => {
   const ContractFactory = (await ethers.getContractFactory(
-    contractName
+    contractName,
+    getContractFactoryParams
   )) as Factory;
 
   const isGetExistingContract = Boolean(existingContractAddress);
@@ -55,9 +64,33 @@ export const getContract = async <
   return contract;
 };
 
-export const getCamp = (params: GetContractParams<CampFactory>) =>
-  getContract<CampFactory, Camp>(params);
+type GetContractConfig = {
+  getContractFactoryParams?: GetContractFactoryParams;
+};
+
+export const getCamp = (getContractConfig: GetContractConfig = {}) =>
+  getContract<CampFactory, Camp>({
+    contractName: "Camp",
+    deployParams: [],
+    ...getContractConfig,
+  });
 
 export const getDappCampWarriors = (
-  params: GetContractParams<DappCampWarriorsFactory>
-) => getContract<DappCampWarriorsFactory, DappCampWarriors>(params);
+  getContractConfig: GetContractConfig = {}
+) =>
+  getContract<DappCampWarriorsFactory, DappCampWarriors>({
+    contractName: "DappCampWarriors",
+    deployParams: [],
+    ...getContractConfig,
+  });
+
+export const getStaking = (
+  campAddress: string,
+  dappCampWarriorsAddress: string,
+  getContractConfig: GetContractConfig = {}
+) =>
+  getContract<StakingFactory, Staking>({
+    contractName: "Staking",
+    deployParams: [campAddress, dappCampWarriorsAddress],
+    ...getContractConfig,
+  });

@@ -17,7 +17,7 @@ describe("Camp tests", () => {
   const oneCampInWei = ethers.utils.parseEther("1");
 
   beforeEach(async () => {
-    campContract = await getCamp({ contractName: "Camp", deployParams: [] });
+    campContract = await getCamp();
     [deployer, account1] = await ethers.getSigners();
   });
 
