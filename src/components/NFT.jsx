@@ -55,7 +55,11 @@ export default function NFT({ imageUrl, tokenId, owner, isStaked, setNfts }) {
         <img
           className="w-full object-cover object-center md:h-36 lg:h-48"
           src={imageUrl}
-          alt="blog"
+          alt="DappCamp Warrior"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = "http:///i.imgur.com/hfM1J8s.png";
+          }}
         />
         <div className="p-6">
           <h1 className="title-font mb-3 text-lg font-medium text-gray-900">

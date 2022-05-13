@@ -11,6 +11,16 @@ export default function Home() {
   const account = useAccount();
   const { dcWarriorsContract, stakingContract } = useContracts();
 
+  const fetchNftDetails = async (nftURL) => {
+    try {
+      const response = await (await fetch(nftURL)).json();
+      const { image } = response;
+      return { image };
+    } catch (e) {
+      return { image: "http:///i.imgur.com/hfM1J8s.png" };
+    }
+  };
+
   const loadNfts = async () => {
     const baseUri = await dcWarriorsContract.baseURI();
 
@@ -28,9 +38,7 @@ export default function Home() {
             staked.owner !== "0x0000000000000000000000000000000000000000";
 
           const nftURL = `${baseUri}/${tokenId}.json`;
-
-          const response = await (await fetch(nftURL)).json();
-          const { image } = response;
+          const { image } = await fetchNftDetails(nftURL);
 
           return {
             imageUrl: image,
